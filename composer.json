@@ -1,0 +1,24 @@
+{
+	"name": "ghaliano/mediaGateway",
+	"description": "Media provider gateway",
+	"keywords": ["vimeo", "video"],
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "Ghali Ahmed",
+			"email": "ghaliano2005@gmail.com"
+		}
+	],
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">=5.3.0",
+        "google/apiclient": "~1.1",
+        "dailymotion/sdk": "~1.6",
+        "vimeo/vimeo-api": "~1.1"
+	},
+	"autoload": {
+		"psr-4": {
+            "MediaGateway\\": "MediaGateway/src/"
+		}
+	}
+}
