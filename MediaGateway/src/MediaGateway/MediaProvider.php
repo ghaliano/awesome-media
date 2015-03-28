@@ -11,6 +11,9 @@ abstract class MediaProvider
 	public function __construct($config) 
 	{
 		$this->config = $config;
+		if (!$this->validateApiConfig()) {
+			throw new \Exception('Missed api auth configuration (see the config.php to get a clue)');
+		}
 	}
 
 	public function getConfig() 

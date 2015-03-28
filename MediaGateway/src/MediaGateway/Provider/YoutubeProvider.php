@@ -74,4 +74,12 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
 	{
 		return MediaProviderType::VIDEO;
 	}
+
+	public function validateApiConfig()
+	{
+		return 
+			isset($this->config['developer_key']) &&
+			$this->config['developer_key']
+		;
+	}
 }

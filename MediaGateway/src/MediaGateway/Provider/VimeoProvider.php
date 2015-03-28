@@ -52,4 +52,16 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
 	{
 		return MediaProviderType::VIDEO;
 	}
+
+	public function validateApiConfig()
+	{
+		return 
+			isset($this->config['api_key']) &&
+			$this->config['api_key'] &&
+			isset($this->config['secret_key']) &&
+			$this->config['secret_key'] &&
+			isset($this->config['access_token']) &&
+			$this->config['access_token'] 
+		;
+	}
 }

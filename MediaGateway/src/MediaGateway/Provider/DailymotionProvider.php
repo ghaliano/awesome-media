@@ -72,4 +72,14 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
 	{
 		return MediaProviderType::VIDEO;
 	}
+
+	public function validateApiConfig()
+	{
+		return 
+			isset($this->config['api_key']) &&
+			$this->config['api_key'] &&
+			isset($this->config['secret_key']) &&
+			$this->config['secret_key'] 
+		;
+	}
 }
