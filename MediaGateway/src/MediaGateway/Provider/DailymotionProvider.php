@@ -3,6 +3,7 @@ namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
+use MediaGateway\Query;
 
 class DailymotionProvider extends MediaProvider implements MediaProviderInterface
 {
@@ -22,10 +23,12 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
     /**
      * {@inheritdoc}
      */
-    public function search() 
+    public function search(Query $query)
     {
         try
         {
+            // todo build query string here, based on Query object.
+
             $result = $this->dailyMotion->get(
                 '/videos?'.$this->prepareFilter(),
                 array('fields' => array('id', 'title', 'description'))

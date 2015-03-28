@@ -3,6 +3,7 @@
 namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
+use MediaGateway\Query;
 
 class ProviderChain implements MediaProviderInterface
 {
@@ -16,34 +17,38 @@ class ProviderChain implements MediaProviderInterface
      */
     function __construct(array $providers = [])
     {
-        foreach ($providers as $name => $provider) {
-            $this->addProvider($name, $provider);
+        foreach ($providers as $provider) {
+            $this->addProvider($provider);
         }
     }
 
     /**
-     * @param string $name
      * @param MediaProviderInterface $provider
+     * @return $this
      */
     public function addProvider(MediaProviderInterface $provider)
     {
-        $this->providers[$provider::getName()] = $provider;
+        $this->providers[$provider->getName()] = $provider;
 
         return $this;
     }
 
     /**
-     * @param array $data
-     * @return array
+     * {@inheritdoc}
      */
-    public function search()
+    public function search(Query $query)
     {
         $results = [];
 
         foreach ($this->providers as $provider) {
-            $results = array_merge($results, $provider->search());
+            $results = array_merge($results, $provider->search($query));
         }
 
         return $results;
+    }
+
+    public function getName()
+    {
+        return 'chain'; // todo not so nice.. maybe not mandate a name on this interface?
     }
 }

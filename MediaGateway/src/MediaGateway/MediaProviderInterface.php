@@ -4,5 +4,14 @@ namespace MediaGateway;
 
 interface MediaProviderInterface
 {
-    public function search();
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @param Query $query
+     * @return array
+     */
+    public function search(Query $query);
 }
