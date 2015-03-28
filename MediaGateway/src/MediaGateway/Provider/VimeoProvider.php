@@ -1,21 +1,30 @@
 <?php
+
 namespace MediaGateway\Provider;
+
 use MediaGateway\MediaProvider;
 use MediaGateway\MediaProviderInterface;
-use MediaGateway\MediaProviderException;
-use MediaGateway\MediaProviderType;
 
-class VimeoProvider extends MediaProvider implements MediaProviderInterface
+class VimeoProvider implements MediaProviderInterface
 {
-    public function search(array $data=[]) 
+    private $vimeo;
+    private $perPage;
+
+    function __construct(\Vimeo\Vimeo $vimeo, $perPage = 10)
     {
-        $result = [];
+        $this->vimeo = $vimeo;
+        $this->perPage = $perPage;
+    }
 
-        $api = new \Vimeo\Vimeo($this->config['api_key'], $this->config['secret_key'], $this->config['access_token']);
+    public function search(array $data=[])
+    {
+        $result = $this->vimeo->request('/videos', array('per_page' => $this->perPage, 'query' => $data['q']), 'GET');
 
-        $result = $api->request('/videos', array('per_page' => 10, 'query' => $data['q']), 'GET');
+        if (isset($result['body']['data'])) {
+            return []; // consider exception?
+        }
 
-        return $this->output($result);
+        return $this->normalize($result);
     }
 
     public function normalize(array $result)
@@ -32,36 +41,5 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
         }
 
         return $normalized;
-    }
-
-    public function getName() 
-    {
-        return 'vimeo';
-    }
-
-    protected function output($result) 
-    {
-        if ($this->normalizeResult && isset($result['body']['data'])) {
-            return $this->normalize($result);
-        }
-
-        return $result;
-    }
-
-    public function getType() 
-    {
-        return MediaProviderType::VIDEO;
-    }
-
-    public function validateApiConfig()
-    {
-        return 
-            isset($this->config['api_key']) &&
-            $this->config['api_key'] &&
-            isset($this->config['secret_key']) &&
-            $this->config['secret_key'] &&
-            isset($this->config['access_token']) &&
-            $this->config['access_token'] 
-        ;
     }
 }
