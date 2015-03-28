@@ -7,10 +7,10 @@ use MediaGateway\ProviderManager;
 $ProviderManager = new ProviderManager();
 
 $result = $ProviderManager
-	->addProvider('youtube', $youtubeConfig)
-	->addProvider('dailymotion', $dailymotionConfig)
-	->addProvider('vimeo', $vimeoConfig)
-	->executeSearch(['q' => 'test'])
+    ->addProvider('youtube', $youtubeConfig)
+    ->addProvider('dailymotion', $dailymotionConfig)
+    ->addProvider('vimeo', $vimeoConfig)
+    ->executeSearch(['q' => 'test'])
 ;
 
 print '<pre>';
