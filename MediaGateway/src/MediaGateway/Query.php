@@ -7,6 +7,7 @@ class Query
     private $term;
     private $offset = 0;
     private $limit = 0;
+    private $extra = [];
 
     /**
      * @param int $limit
@@ -63,5 +64,24 @@ class Query
     public function getTerm()
     {
         return $this->term;
+    }
+
+    /**
+     * @param array $extra
+     * @return $this
+     */
+    public function setExtra(array $extra)
+    {
+        $this->extra = $extra;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtra()
+    {
+        return $this->extra;
     }
 }

@@ -44,4 +44,4 @@ $query->setTerm('kittens')->setLimit(10);
 $result = $providerChain->search($query);
 
 print '<pre>';
-print_r($result); 
+print_r($result);
