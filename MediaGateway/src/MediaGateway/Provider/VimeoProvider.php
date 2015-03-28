@@ -2,25 +2,22 @@
 
 namespace MediaGateway\Provider;
 
-use MediaGateway\MediaProvider;
 use MediaGateway\MediaProviderInterface;
 
-class VimeoProvider implements MediaProviderInterface
-{
+class VimeoProvider extends MediaProvider implements MediaProviderInterface
+{    
     private $vimeo;
-    private $perPage;
 
-    function __construct(\Vimeo\Vimeo $vimeo, $perPage = 10)
+    function __construct(\Vimeo\Vimeo $vimeo)
     {
         $this->vimeo = $vimeo;
-        $this->perPage = $perPage;
     }
 
     public function search(array $data=[])
     {
-        $result = $this->vimeo->request('/videos', array('per_page' => $this->perPage, 'query' => $data['q']), 'GET');
+        $result = $this->vimeo->request('/videos', $this->prepareFilter(), 'GET');
 
-        if (isset($result['body']['data'])) {
+        if (!isset($result['body']['data'])) {
             return []; // consider exception?
         }
 
@@ -32,8 +29,8 @@ class VimeoProvider implements MediaProviderInterface
         $normalized = [];
         foreach($result['body']['data'] as $item) {
             $normalized[] = [
-                'provider' => $this->getName(),
-                'type' => $this->getType(),
+                'provider' => self::getName(),
+                'type' => self::getType(),
                 'id' => str_replace('/videos/', '', $item['uri']),
                 'title' => $item['name'],
                 'description' => $item['description']
@@ -41,5 +38,20 @@ class VimeoProvider implements MediaProviderInterface
         }
 
         return $normalized;
+    }
+
+    public static function getName()
+    {
+        return 'vimeo';
+    }
+
+    public static function getType()
+    {
+        return 'video';
+    }
+
+    protected function prepareFilter() 
+    {
+        return array_merge($this->searchFilters, ['per_page' => $this->limit]);
     }
 }

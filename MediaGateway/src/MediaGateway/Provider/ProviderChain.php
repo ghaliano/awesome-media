@@ -25,21 +25,23 @@ class ProviderChain implements MediaProviderInterface
      * @param string $name
      * @param MediaProviderInterface $provider
      */
-    public function addProvider($name, MediaProviderInterface $provider)
+    public function addProvider(MediaProviderInterface $provider)
     {
-        $this->providers[$name] = $provider;
+        $this->providers[$provider::getName()] = $provider;
+
+        return $this;
     }
 
     /**
      * @param array $data
      * @return array
      */
-    public function search(array $data)
+    public function search()
     {
         $results = [];
 
         foreach ($this->providers as $provider) {
-            $results = array_merge($results, $provider->search($data));
+            $results = array_merge($results, $provider->search());
         }
 
         return $results;

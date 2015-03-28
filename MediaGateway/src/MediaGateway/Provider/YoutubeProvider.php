@@ -5,7 +5,7 @@ namespace MediaGateway\Provider;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
 
-class YoutubeProvider implements MediaProviderInterface
+class YoutubeProvider extends MediaProvider implements MediaProviderInterface
 {
     protected $youtube;
 
@@ -18,7 +18,7 @@ class YoutubeProvider implements MediaProviderInterface
     {
         try {
             $searchResponse = $this->youtube->search->listSearch(
-                'id,snippet', $data
+                'id,snippet', $this->prepareFilter()
             );
 
             foreach ($searchResponse['items'] as $searchResult) {
@@ -45,8 +45,8 @@ class YoutubeProvider implements MediaProviderInterface
         $normalized = [];
         foreach($result as $item) {
             $normalized[] = [
-                'provider' => $this->getName(),
-                'type' => $this->getType(),
+                'provider' => self::getName(),
+                'type' => self::getType(),
                 'id' => $item['id']->videoId,
                 'title' => $item['snippet']['title'],
                 'description' => $item['snippet']['description'],
@@ -55,5 +55,21 @@ class YoutubeProvider implements MediaProviderInterface
         }
 
         return $normalized;
+    }
+
+    public static function getName()
+    {
+        return 'youtube';
+    }
+
+    public static function getType()
+    {
+        return 'video';
+    }
+
+    /** because each provider has specific filter implementation and specific key */
+    protected function prepareFilter() 
+    {
+        return array_merge($this->searchFilters, ['maxResults' => $this->limit]);
     }
 }

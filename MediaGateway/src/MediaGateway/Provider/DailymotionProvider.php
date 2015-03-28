@@ -4,7 +4,7 @@ namespace MediaGateway\Provider;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
 
-class DailymotionProvider implements MediaProviderInterface
+class DailymotionProvider extends MediaProvider implements MediaProviderInterface
 {
     /**
      * @var \Dailymotion
@@ -22,12 +22,12 @@ class DailymotionProvider implements MediaProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function search(array $data=[]) 
+    public function search() 
     {
         try
         {
             $result = $this->dailyMotion->get(
-                '/videos?search='.$data['q'],
+                '/videos?'.$this->prepareFilter(),
                 array('fields' => array('id', 'title', 'description'))
             );
 
@@ -52,8 +52,8 @@ class DailymotionProvider implements MediaProviderInterface
         $normalized = [];
         foreach($result['list'] as $item) {
             $normalized[] = [
-                'provider' => $this->getName(),
-                'type' => $this->getType(),
+                'provider' => self::getName(),
+                'type' => self::getType(),
                 'id' => $item['id'],
                 'title' => $item['title'],
                 'description' => $item['description']
@@ -61,5 +61,20 @@ class DailymotionProvider implements MediaProviderInterface
         }
 
         return $normalized;
+    }
+
+    public static function getName()
+    {
+        return 'dailymotion';
+    }
+
+    public static function getType()
+    {
+        return 'video';
+    }
+
+    protected function prepareFilter() 
+    {
+        return http_build_query($this->searchFilters);
     }
 }
