@@ -4,6 +4,7 @@ such as Youtube/dailymotion/vimeo and return a list of formated result wth sever
 only Search Future is now availbale
 
 # TODO
-** Adding more future (Upload/remove/update)
-** DATA formating can be in a separate class for each provider
-** Adding test !!!
+* Adding more future (Upload/remove/update MEdia)
+* DATA formating can be in a separate class for each provider
+* Adding other Media type (only video provider are now implemented)
+* Adding test !!!
