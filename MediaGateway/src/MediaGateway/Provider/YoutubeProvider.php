@@ -1,21 +1,23 @@
 <?php
+
 namespace MediaGateway\Provider;
-use MediaGateway\MediaProvider;
+
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
-use MediaGateway\MediaProviderType;    
 
-class YoutubeProvider extends MediaProvider implements MediaProviderInterface
+class YoutubeProvider implements MediaProviderInterface
 {
-    protected $client;
+    protected $youtube;
+
+    function __construct(\Google_Service_YouTube $youtube)
+    {
+        $this->youtube = $youtube;
+    }
 
     public function search(array $data=[]) 
     {
-        $result = [];
-        $youtube = new \Google_Service_YouTube($this->createClient());
-
         try {
-            $searchResponse = $youtube->search->listSearch(
+            $searchResponse = $this->youtube->search->listSearch(
                 'id,snippet', $data
             );
 
@@ -26,6 +28,9 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
                   break;
               }
             }
+
+            return $this->normalize($result);
+
         } catch (\Google_ServiceException $e) {
             throw new MediaProviderException($e->getMessage());
         } catch (\Google_Exception $e) {
@@ -33,19 +38,6 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
         } catch (\Exception $e) {
             throw new MediaProviderException($e->getMessage());
         }
-
-        return $this->output($result);
-    }
-
-    protected function createClient() 
-    {
-        if ($this->client) {
-            return $this->client;
-        }
-        $client = new \Google_Client();
-        $client->setDeveloperKey($this->config['developer_key']);
-
-        return $client;
     }
 
     public function normalize(array $result)
@@ -63,23 +55,5 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
         }
 
         return $normalized;
-    }
-
-    public function getName() 
-    {
-        return 'youtube';
-    }
-
-    public function getType() 
-    {
-        return MediaProviderType::VIDEO;
-    }
-
-    public function validateApiConfig()
-    {
-        return 
-            isset($this->config['developer_key']) &&
-            $this->config['developer_key']
-        ;
     }
 }

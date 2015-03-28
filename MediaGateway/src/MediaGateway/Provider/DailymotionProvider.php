@@ -1,26 +1,37 @@
 <?php
 namespace MediaGateway\Provider;
-use MediaGateway\MediaProvider;
+
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
-use MediaGateway\MediaProviderType;
 
-class DailymotionProvider extends MediaProvider implements MediaProviderInterface
+class DailymotionProvider implements MediaProviderInterface
 {
+    /**
+     * @var \Dailymotion
+     */
+    private $dailyMotion;
+
+    /**
+     * @param \Dailymotion $dailyMotion
+     */
+    function __construct(\Dailymotion $dailyMotion)
+    {
+        $this->dailyMotion = $dailyMotion;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function search(array $data=[]) 
     {
-        $result = [];
-
-        $api = new \Dailymotion();
-        
-        $api->setGrantType(\Dailymotion::GRANT_TYPE_CLIENT_CREDENTIALS, $this->config['api_key'], $this->config['secret_key']);
-
         try
         {
-            $result = $api->get(
+            $result = $this->dailyMotion->get(
                 '/videos?search='.$data['q'],
                 array('fields' => array('id', 'title', 'description'))
             );
+
+            return $this->normalize($result);
         }
         catch (\DailymotionAuthRequiredException $e)
         {
@@ -34,11 +45,9 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
         {
             throw new MediaProviderException($e->getMessage());
         }
-
-        return $this->output($result);
     }
 
-    public function normalize(array $result)
+    protected function normalize(array $result)
     { 
         $normalized = [];
         foreach($result['list'] as $item) {
@@ -52,34 +61,5 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
         }
 
         return $normalized;
-    }
-
-    public function getName() 
-    {
-        return 'dailymotion';
-    }
-
-    protected function output($result) 
-    {
-        if ($this->normalizeResult && isset($result['list'])) {
-            return $this->normalize($result);
-        }
-
-        return $result;
-    }
-
-    public function getType() 
-    {
-        return MediaProviderType::VIDEO;
-    }
-
-    public function validateApiConfig()
-    {
-        return 
-            isset($this->config['api_key']) &&
-            $this->config['api_key'] &&
-            isset($this->config['secret_key']) &&
-            $this->config['secret_key'] 
-        ;
     }
 }
