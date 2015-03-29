@@ -3,6 +3,7 @@
 namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
+use MediaGateway\Query;
 
 class VimeoProvider extends MediaProvider implements MediaProviderInterface
 {    
@@ -13,9 +14,9 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
         $this->vimeo = $vimeo;
     }
 
-    public function search(array $data=[])
+    public function search(Query $query)
     {
-        $result = $this->vimeo->request('/videos', $this->prepareFilter(), 'GET');
+        $result = $this->vimeo->request('/videos', $this->prepareFilter($query), 'GET');
 
         if (!isset($result['body']['data'])) {
             return []; // consider exception?
@@ -50,8 +51,9 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
         return 'video';
     }
 
-    protected function prepareFilter() 
+    /** because each provider has specific filter implementation and specific key */
+    protected function prepareFilter($query) 
     {
-        return array_merge($this->searchFilters, ['per_page' => $this->limit]);
+        return ['query' => $query->getTerm()]+$query->getExtra()+['per_page' => $query->getLimit()];
     }
 }

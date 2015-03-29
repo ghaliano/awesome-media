@@ -4,6 +4,7 @@ namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
+use MediaGateway\Query;
 
 class YoutubeProvider extends MediaProvider implements MediaProviderInterface
 {
@@ -14,11 +15,11 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
         $this->youtube = $youtube;
     }
 
-    public function search(array $data=[]) 
+    public function search(Query $query) 
     {
         try {
             $searchResponse = $this->youtube->search->listSearch(
-                'id,snippet', $this->prepareFilter()
+                'id,snippet', $this->prepareFilter($query)
             );
 
             foreach ($searchResponse['items'] as $searchResult) {
@@ -68,8 +69,8 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
     }
 
     /** because each provider has specific filter implementation and specific key */
-    protected function prepareFilter() 
+    protected function prepareFilter($query) 
     {
-        return array_merge($this->searchFilters, ['maxResults' => $this->limit]);
+        return ['q' => $query->getTerm()]+$query->getExtra()+['maxResults' => $query->getLimit()];
     }
 }

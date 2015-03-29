@@ -7,7 +7,7 @@ interface MediaProviderInterface
     /**
      * @return string
      */
-    public function getName();
+    public static function getName();
 
     /**
      * @param Query $query
