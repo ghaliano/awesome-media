@@ -5,7 +5,7 @@ namespace MediaGateway\Provider;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\Query;
 
-class VimeoProvider extends MediaProvider implements MediaProviderInterface
+class VimeoProvider implements MediaProviderInterface
 {    
     private $vimeo;
 
@@ -29,13 +29,13 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
     {
         $normalized = [];
         foreach($result['body']['data'] as $item) {
-            $normalized[] = [
-                'provider' => self::getName(),
-                'type' => self::getType(),
-                'id' => str_replace('/videos/', '', $item['uri']),
-                'title' => $item['name'],
-                'description' => $item['description']
-            ];
+            $vimeo = new \MediaGateway\Model\Vimeo();
+            $vimeo
+                ->setRemoteId(str_replace('/videos/', '', $item['uri']))
+                ->setTitle($item['name'])
+                ->setDescription($item['description'])
+            ;
+            $normalized[] = $vimeo;
         }
 
         return $normalized;

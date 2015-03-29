@@ -5,7 +5,7 @@ use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
 use MediaGateway\Query;
 
-class DailymotionProvider extends MediaProvider implements MediaProviderInterface
+class DailymotionProvider implements MediaProviderInterface
 {
     /**
      * @var \Dailymotion
@@ -27,8 +27,6 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
     {
         try
         {
-            // todo build query string here, based on Query object.
-
             $result = $this->dailyMotion->get(
                 '/videos?'.$this->buildQuery($query),
                 array('fields' => array('id', 'title', 'description'))
@@ -54,13 +52,13 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
     { 
         $normalized = [];
         foreach($result['list'] as $item) {
-            $normalized[] = [
-                'provider' => self::getName(),
-                'type' => self::getType(),
-                'id' => $item['id'],
-                'title' => $item['title'],
-                'description' => $item['description']
-            ];
+            $dailymotion = new \MediaGateway\Model\Dailymotion();
+            $dailymotion
+                ->setRemoteId($item['id'])
+                ->setTitle($item['title'])
+                ->setDescription($item['description'])
+            ;
+            $normalized[] = $dailymotion;
         }
 
         return $normalized;

@@ -6,7 +6,7 @@ use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
 use MediaGateway\Query;
 
-class YoutubeProvider extends MediaProvider implements MediaProviderInterface
+class YoutubeProvider implements MediaProviderInterface
 {
     protected $youtube;
 
@@ -45,14 +45,14 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
     { 
         $normalized = [];
         foreach($result as $item) {
-            $normalized[] = [
-                'provider' => self::getName(),
-                'type' => self::getType(),
-                'id' => $item['id']->videoId,
-                'title' => $item['snippet']['title'],
-                'description' => $item['snippet']['description'],
-                'thumbnails' => $item['snippet']['thumbnails']['default']['url']
-            ];
+            $youtube = new \MediaGateway\Model\Youtube();
+            $youtube
+                ->setRemoteId($item['id']->videoId)
+                ->setTitle($item['snippet']['title'])
+                ->setDescription($item['snippet']['description'])
+                ->setThumbnails($item['snippet']['thumbnails'])
+            ;
+            $normalized[] = $youtube;
         }
 
         return $normalized;
