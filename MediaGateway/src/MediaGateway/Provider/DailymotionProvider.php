@@ -78,6 +78,6 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
 
     protected function prepareFilter($query) 
     {
-        return http_build_query(['search' => $query->getTerm()]+$query->getExtra()+['per_page' => $query->getLimit()]);
+        return http_build_query(['search' => $query->getTerm()]+$query->getExtra()+['limit' => $query->getLimit()]);
     }
 }
