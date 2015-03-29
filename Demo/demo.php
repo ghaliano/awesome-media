@@ -33,11 +33,15 @@ $dailymotionProvider->addSearchFilter('search', 'test')->setLimit(10);
 
 //providerChain init and doing search
 $providerChain = new ProviderChain();
-$result = $providerChain
+$providerChain
     ->addProvider($youtubeProvider)
     ->addProvider($vimeoProvider)
     ->addProvider($dailymotionProvider)
-    ->search();
+;
+$query = new \MediaGateway\Query();
+$query->setTerm('kittens')->setLimit(10);
+
+$result = $providerChain->search($query);
 
 print '<pre>';
-print_r($result); 
+print_r($result);
