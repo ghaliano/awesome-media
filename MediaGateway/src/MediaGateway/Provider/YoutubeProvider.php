@@ -19,7 +19,7 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
     {
         try {
             $searchResponse = $this->youtube->search->listSearch(
-                'id,snippet', $this->prepareFilter($query)
+                'id,snippet', $this->buildQuery($query)
             );
 
             foreach ($searchResponse['items'] as $searchResult) {
@@ -69,7 +69,7 @@ class YoutubeProvider extends MediaProvider implements MediaProviderInterface
     }
 
     /** because each provider has specific filter implementation and specific key */
-    protected function prepareFilter($query) 
+    protected function buildQuery($query) 
     {
         return ['q' => $query->getTerm()]+$query->getExtra()+['maxResults' => $query->getLimit()];
     }

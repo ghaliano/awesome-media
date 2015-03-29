@@ -30,7 +30,7 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
             // todo build query string here, based on Query object.
 
             $result = $this->dailyMotion->get(
-                '/videos?'.$this->prepareFilter($query),
+                '/videos?'.$this->buildQuery($query),
                 array('fields' => array('id', 'title', 'description'))
             );
 
@@ -76,7 +76,7 @@ class DailymotionProvider extends MediaProvider implements MediaProviderInterfac
         return 'video';
     }
 
-    protected function prepareFilter($query) 
+    protected function buildQuery($query) 
     {
         return http_build_query(['search' => $query->getTerm()]+$query->getExtra()+['limit' => $query->getLimit()]);
     }

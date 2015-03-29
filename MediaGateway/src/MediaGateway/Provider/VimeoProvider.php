@@ -16,7 +16,7 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
 
     public function search(Query $query)
     {
-        $result = $this->vimeo->request('/videos', $this->prepareFilter($query), 'GET');
+        $result = $this->vimeo->request('/videos', $this->buildQuery($query), 'GET');
 
         if (!isset($result['body']['data'])) {
             return []; // consider exception?
@@ -52,7 +52,7 @@ class VimeoProvider extends MediaProvider implements MediaProviderInterface
     }
 
     /** because each provider has specific filter implementation and specific key */
-    protected function prepareFilter($query) 
+    protected function buildQuery($query) 
     {
         return ['query' => $query->getTerm()]+$query->getExtra()+['per_page' => $query->getLimit()];
     }
