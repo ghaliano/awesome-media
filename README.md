@@ -14,10 +14,10 @@ Add the AwesomeMedia library to your composer.json file's require field
 ```
 #How to use?
 ##Client configuration
-<?php
 This is a typical configuration used on the demo
 https://github.com/ghaliano/awesome-media/blob/master/Demo/config.php
 ```
+<?php
 $youtubeConfig = [
     'developer_key' => null
 ];    
