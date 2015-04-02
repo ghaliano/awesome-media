@@ -8,7 +8,7 @@ Add the vimeo library to your composer.json file's require field
 ```
 {
     "require" : {
-        "ghaliano/AwesomeMedia" : "1.1.*"
+        "ghaliano/AwesomeMedia" : "dev-master"
     }
 }
 ```
