@@ -10,6 +10,7 @@
         }
     ],
     "minimum-stability": "stable",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.3.0",
         "google/apiclient": "~1.1",
@@ -19,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "media-gateway\\": "media-gateway/src/"
+            "MediaGateway\\": "mediaGateway/src/"
         }
     }
 }
