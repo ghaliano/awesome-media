@@ -5,18 +5,18 @@ namespace MediaGateway\Provider;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\Query;
 
-class VimeoProvider implements MediaProviderInterface
+class SoundcloudProvider extends AbstractProvider implements MediaProviderInterface
 {    
-    private $vimeo;
+    private $soundcloud;
 
-    function __construct(\Vimeo\Vimeo $vimeo)
+    function __construct($soundcloud)
     {
-        $this->vimeo = $vimeo;
+        $this->soundcloud = $soundcloud;
     }
 
     public function search(Query $query)
     {
-        $result = $this->vimeo->request('/videos', $this->buildQuery($query), 'GET');
+        $result = $this->soundcloud->get('tracks', array('q' => 'buskers', 'license' => 'cc-by-sa'));
 
         if (!isset($result['body']['data'])) {
             return []; // consider exception?
@@ -29,31 +29,21 @@ class VimeoProvider implements MediaProviderInterface
     {
         $normalized = [];
         foreach($result['body']['data'] as $item) {
-            $vimeo = new \MediaGateway\Model\Vimeo();
-            $vimeo
+            $soundcloud = new \MediaGateway\Model\Soundcloud();
+            $soundcloud
                 ->setRemoteId(str_replace('/videos/', '', $item['uri']))
                 ->setTitle($item['name'])
                 ->setDescription($item['description'])
             ;
-            $normalized[] = $vimeo;
+            $normalized[] = $soundcloud;
         }
 
         return $normalized;
     }
 
-    public static function getName()
-    {
-        return 'vimeo';
-    }
-
-    public static function getType()
-    {
-        return 'video';
-    }
-
     /** because each provider has specific filter implementation and specific key */
     protected function buildQuery($query) 
     {
-        return ['query' => $query->getTerm()]+$query->getExtra()+['per_page' => $query->getLimit()];
+        return ['q' => $query->getTerm()]+$query->getExtra()+['limit' => $query->getLimit()];
     }
 }

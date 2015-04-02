@@ -13,3 +13,8 @@ $vimeoConfig = [
     'secret_key'=> null, 
     'access_token' => null
 ];
+
+$soundcloudConfig = [
+    'api_key' => '',
+    'secret_key' => ''
+];

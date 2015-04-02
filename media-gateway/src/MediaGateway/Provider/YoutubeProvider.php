@@ -3,10 +3,12 @@
 namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
+use MediaGateway\MediaRendrerInterface;
 use MediaGateway\MediaProviderException;
+use MediaGateway\Provider\AbstractProvider;
 use MediaGateway\Query;
 
-class YoutubeProvider implements MediaProviderInterface
+class YoutubeProvider extends AbstractProvider implements MediaProviderInterface
 {
     protected $youtube;
 
@@ -56,16 +58,6 @@ class YoutubeProvider implements MediaProviderInterface
         }
 
         return $normalized;
-    }
-
-    public static function getName()
-    {
-        return 'youtube';
-    }
-
-    public static function getType()
-    {
-        return 'video';
     }
 
     /** because each provider has specific filter implementation and specific key */

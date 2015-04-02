@@ -5,7 +5,7 @@ use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
 use MediaGateway\Query;
 
-class DailymotionProvider implements MediaProviderInterface
+class DailymotionProvider extends AbstractProvider implements MediaProviderInterface
 {
     /**
      * @var \Dailymotion
@@ -62,16 +62,6 @@ class DailymotionProvider implements MediaProviderInterface
         }
 
         return $normalized;
-    }
-
-    public static function getName()
-    {
-        return 'dailymotion';
-    }
-
-    public static function getType()
-    {
-        return 'video';
     }
 
     protected function buildQuery($query) 

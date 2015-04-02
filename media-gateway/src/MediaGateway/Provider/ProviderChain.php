@@ -28,7 +28,18 @@ class ProviderChain implements MediaProviderInterface
      */
     public function addProvider(MediaProviderInterface $provider)
     {
-        $this->providers[$provider::getName()] = $provider;
+        $this->providers[] = $provider;
+
+        return $this;
+    }
+
+    /**
+     * @param MediaProviderInterface $provider
+     * @return $this
+     */
+    public function addProviders($providers)
+    {
+        $this->providers = $providers;
 
         return $this;
     }
@@ -47,8 +58,4 @@ class ProviderChain implements MediaProviderInterface
         return $results;
     }
 
-    public static function getName()
-    {
-        return 'chain';
-    }
 }
