@@ -3,15 +3,17 @@
 namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
+use MediaGateway\Normalizer\SoundcloudNormalizer;
 use MediaGateway\Query;
 
-class SoundcloudProvider extends AbstractProvider implements MediaProviderInterface
+class SoundcloudProvider extends AbstractProvider
 {    
     private $soundcloud;
 
-    function __construct($soundcloud)
+    function __construct($soundcloud, MediaItemNormalizerInterface $normalizer=null)
     {
         $this->soundcloud = $soundcloud;
+        $this->normalizer = $normalizer?$normalizer:new SoundcloudNormalizer();
     }
 
     public function search(Query $query)
@@ -22,23 +24,7 @@ class SoundcloudProvider extends AbstractProvider implements MediaProviderInterf
             return []; // consider exception?
         }
 
-        return $this->normalize($result);
-    }
-
-    public function normalize(array $result)
-    {
-        $normalized = [];
-        foreach($result['body']['data'] as $item) {
-            $soundcloud = new \MediaGateway\Model\Soundcloud();
-            $soundcloud
-                ->setRemoteId(str_replace('/videos/', '', $item['uri']))
-                ->setTitle($item['name'])
-                ->setDescription($item['description'])
-            ;
-            $normalized[] = $soundcloud;
-        }
-
-        return $normalized;
+        return $this->normalizer->normalize($result);
     }
 
     /** because each provider has specific filter implementation and specific key */

@@ -2,22 +2,23 @@
 
 namespace MediaGateway\Provider;
 
+use MediaGateway\MediaItemNormalizerInterface;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\Query;
 
-class AbstractProvider implements MediaProviderInterface
-{   
-    protected $rendrer;
+abstract class AbstractProvider implements MediaProviderInterface
+{
+    protected $outputNormalizer;
 
-    public function setRendrer(\MediaRendrerInterface) 
+    public function setNormalizer(MediaOutputNormalizerInterface $rendrer) 
     {
-        $this->rendrer = $rendrer;
+        $this->outputNormalizer = $outputNormalizer;
 
         return $this;
     }
 
-    public function getRendrer() 
+    public function getNormalizer() 
     {
-        return $this->rendrer;
+        return $this->outputNormalizer;
     }
 }

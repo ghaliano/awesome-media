@@ -6,15 +6,17 @@ use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaRendrerInterface;
 use MediaGateway\MediaProviderException;
 use MediaGateway\Provider\AbstractProvider;
+use MediaGateway\Normalizer\YoutubeNormalizer;
 use MediaGateway\Query;
 
-class YoutubeProvider extends AbstractProvider implements MediaProviderInterface
+class YoutubeProvider extends AbstractProvider
 {
     protected $youtube;
 
-    function __construct(\Google_Service_YouTube $youtube)
+    function __construct(\Google_Service_YouTube $youtube, MediaItemNormalizerInterface $normalizer=null)
     {
         $this->youtube = $youtube;
+        $this->normalizer = $normalizer?$normalizer:new YoutubeNormalizer();
     }
 
     public function search(Query $query) 
@@ -32,7 +34,7 @@ class YoutubeProvider extends AbstractProvider implements MediaProviderInterface
               }
             }
 
-            return $this->normalize($result);
+            return $this->normalizer->normalize($result);
 
         } catch (\Google_ServiceException $e) {
             throw new MediaProviderException($e->getMessage());
@@ -41,23 +43,6 @@ class YoutubeProvider extends AbstractProvider implements MediaProviderInterface
         } catch (\Exception $e) {
             throw new MediaProviderException($e->getMessage());
         }
-    }
-
-    public function normalize(array $result)
-    { 
-        $normalized = [];
-        foreach($result as $item) {
-            $youtube = new \MediaGateway\Model\Youtube();
-            $youtube
-                ->setRemoteId($item['id']->videoId)
-                ->setTitle($item['snippet']['title'])
-                ->setDescription($item['snippet']['description'])
-                ->setThumbnails($item['snippet']['thumbnails'])
-            ;
-            $normalized[] = $youtube;
-        }
-
-        return $normalized;
     }
 
     /** because each provider has specific filter implementation and specific key */

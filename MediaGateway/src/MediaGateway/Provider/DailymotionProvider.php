@@ -3,9 +3,10 @@ namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
+use MediaGateway\Normalizer\DailymotionNormalizer;
 use MediaGateway\Query;
 
-class DailymotionProvider extends AbstractProvider implements MediaProviderInterface
+class DailymotionProvider extends AbstractProvider
 {
     /**
      * @var \Dailymotion
@@ -15,9 +16,10 @@ class DailymotionProvider extends AbstractProvider implements MediaProviderInter
     /**
      * @param \Dailymotion $dailyMotion
      */
-    function __construct(\Dailymotion $dailyMotion)
+    function __construct(\Dailymotion $dailyMotion, MediaItemNormalizerInterface $normalizer=null)
     {
         $this->dailyMotion = $dailyMotion;
+        $this->normalizer = $normalizer?$normalizer:new DailymotionNormalizer();
     }
 
     /**
@@ -32,7 +34,7 @@ class DailymotionProvider extends AbstractProvider implements MediaProviderInter
                 array('fields' => array('id', 'title', 'description'))
             );
 
-            return $this->normalize($result);
+            return $this->normalizer->normalize($result);
         }
         catch (\DailymotionAuthRequiredException $e)
         {
@@ -46,22 +48,6 @@ class DailymotionProvider extends AbstractProvider implements MediaProviderInter
         {
             throw new MediaProviderException($e->getMessage());
         }
-    }
-
-    protected function normalize(array $result)
-    { 
-        $normalized = [];
-        foreach($result['list'] as $item) {
-            $dailymotion = new \MediaGateway\Model\Dailymotion();
-            $dailymotion
-                ->setRemoteId($item['id'])
-                ->setTitle($item['title'])
-                ->setDescription($item['description'])
-            ;
-            $normalized[] = $dailymotion;
-        }
-
-        return $normalized;
     }
 
     protected function buildQuery($query) 

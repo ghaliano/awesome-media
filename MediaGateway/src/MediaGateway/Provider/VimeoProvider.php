@@ -3,15 +3,18 @@
 namespace MediaGateway\Provider;
 
 use MediaGateway\MediaProviderInterface;
+use MediaGateway\Normalizer\VimeoNormalizer;
 use MediaGateway\Query;
 
-class VimeoProvider extends AbstractProvider implements MediaProviderInterface
+class VimeoProvider extends AbstractProvider
 {    
     private $vimeo;
+    private $normalizer;
 
-    function __construct(\Vimeo\Vimeo $vimeo)
+    function __construct(\Vimeo\Vimeo $vimeo, MediaItemNormalizerInterface $normalizer=null)
     {
         $this->vimeo = $vimeo;
+        $this->normalizer = $normalizer?$normalizer:new VimeoNormalizer();
     }
 
     public function search(Query $query)
@@ -22,23 +25,7 @@ class VimeoProvider extends AbstractProvider implements MediaProviderInterface
             return []; // consider exception?
         }
 
-        return $this->normalize($result);
-    }
-
-    public function normalize(array $result)
-    {
-        $normalized = [];
-        foreach($result['body']['data'] as $item) {
-            $vimeo = new \MediaGateway\Model\Vimeo();
-            $vimeo
-                ->setRemoteId(str_replace('/videos/', '', $item['uri']))
-                ->setTitle($item['name'])
-                ->setDescription($item['description'])
-            ;
-            $normalized[] = $vimeo;
-        }
-
-        return $normalized;
+        return $this->normalizer->normalize($result);
     }
 
     /** because each provider has specific filter implementation and specific key */
