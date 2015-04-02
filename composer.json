@@ -1,5 +1,5 @@
 {
-    "name": "ghaliano/mediaGateway",
+    "name": "ghaliano/media-gateway",
     "description": "Media provider gateway",
     "keywords": ["vimeo", "video"],
     "license": "Apache-2.0",
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MediaGateway\\": "MediaGateway/src/"
+            "media-gateway\\": "media-gateway/src/"
         }
     }
 }
