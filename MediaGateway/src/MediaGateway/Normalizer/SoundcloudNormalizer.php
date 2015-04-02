@@ -11,11 +11,11 @@ class SoundcloudNormalizer implements MediaItemNormalizerInterface
     public function normalize(array $result)
     {
         $normalized = [];
-        foreach($result['body']['data'] as $item) {
+        foreach($result as $item) {
             $soundcloud = new \MediaGateway\Model\Soundcloud();
             $soundcloud
-                ->setRemoteId(str_replace('/videos/', '', $item['uri']))
-                ->setTitle($item['name'])
+                ->setRemoteId($item['id'])
+                ->setTitle($item['title'])
                 ->setDescription($item['description'])
             ;
             $normalized[] = $soundcloud;

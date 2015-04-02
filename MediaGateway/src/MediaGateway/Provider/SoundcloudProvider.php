@@ -18,17 +18,17 @@ class SoundcloudProvider extends AbstractProvider
 
     public function search(Query $query)
     {
-        $result = $this->soundcloud->get('tracks', array('q' => 'buskers', 'license' => 'cc-by-sa'));
-
-        if (!isset($result['body']['data'])) {
-            return []; // consider exception?
+        try {
+            $result = json_decode($this->soundcloud->get('tracks', $this->buildQuery($query)), true);
+        } catch (Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
+            throw $e->getMessage();
         }
 
         return $this->normalizer->normalize($result);
     }
 
     /** because each provider has specific filter implementation and specific key */
-    protected function buildQuery($query) 
+    protected function buildQuery(Query $query) 
     {
         return ['q' => $query->getTerm()]+$query->getExtra()+['limit' => $query->getLimit()];
     }

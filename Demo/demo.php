@@ -27,15 +27,20 @@ $dailymotionProvider = new DailymotionProvider($dailymotionClient);
 
 //Vimeo Client init
 $soundcloudClient = // create a client object with your app credentials
-$soundcloudClient = new \Soundcloud\Service($soundcloudConfig['api_key'], $soundcloudConfig['secret_key']);
+$soundcloudClient = new \Soundcloud\Service(
+    $soundcloudConfig['api_key'], 
+    $soundcloudConfig['secret_key']
+);
+$soundcloudClient->setAccessToken($soundcloudClient->credentialsFlow($soundcloudConfig['login'], $soundcloudConfig['password'])['access_token']);
+
 $soundcloudProvider = new SoundcloudProvider($soundcloudClient);
 
 //providerChain init and doing search
 $providerChain = new ProviderChain();
 $providerChain
-    ->addProvider($youtubeProvider)
-    ->addProvider($vimeoProvider)
-    ->addProvider($dailymotionProvider)
+    //->addProvider($youtubeProvider)
+    //->addProvider($vimeoProvider)
+    //->addProvider($dailymotionProvider)
     ->addProvider($soundcloudProvider)
 ;
 
