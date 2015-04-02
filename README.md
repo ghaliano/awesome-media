@@ -4,8 +4,8 @@ such as Youtube/dailymotion/vimeo and return a list of normalized results.
 
 #Installation
 ##Composer
-```
 Add the vimeo library to your composer.json file's require field
+```
 {
     "require" : {
         "ghaliano/AwesomeMedia" : "1.1.*"
