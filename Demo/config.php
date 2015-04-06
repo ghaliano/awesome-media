@@ -20,3 +20,7 @@ $soundcloudConfig = [
     'login' => '',
     'password' => ''
 ];
+
+$flickerConfig = [
+    'api_key' => ''
+];

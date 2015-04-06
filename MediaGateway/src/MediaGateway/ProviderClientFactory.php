@@ -1,6 +1,7 @@
 <?php
 
 namespace MediaGateway;
+use MediaGateway\Client\FlickrClient;
 
 class ProviderClientFactory
 {
@@ -15,6 +16,10 @@ class ProviderClientFactory
 
             case 'vimeo':
             $client = new \Vimeo\Vimeo($config['api_key'], $config['secret_key'], $config['access_token']);
+            break;
+
+            case 'flickr':
+            $client = new FlickrClient($config['api_key']);
             break;
 
             case 'dailymotion':
@@ -39,7 +44,7 @@ class ProviderClientFactory
             break;
 
             default:
-            throw new \MediaProviderException('You must provide a media provider name');
+            throw new MediaProviderException('You must provide a media provider name');
             break;
         }
 
