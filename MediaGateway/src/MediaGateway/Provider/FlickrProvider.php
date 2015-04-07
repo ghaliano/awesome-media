@@ -6,22 +6,19 @@ use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
 use MediaGateway\Normalizer\FlickrNormalizer;
 use MediaGateway\Query;
+use MediaGateway\Client\MediaProviderClient;
 
 class FlickrProvider extends AbstractProvider
-{    
-    private $flickr;
-
-    function __construct($flickr, MediaItemNormalizerInterface $normalizer=null)
-    {
-        $this->flickr = $flickr;
-        $this->normalizer = $normalizer?$normalizer:new FlickrNormalizer();
-    }
-
+{
     public function search(Query $query)
     {
         try {
-            $result = $this->flickr->search($this->buildQuery($query));
-
+            $client = $this->client->getClient();
+            $client->setOpt(CURLOPT_CONNECTTIMEOUT, 5);
+            $client->setOpt(CURLOPT_URL, 'https://query.yahooapis.com/v1/public/yql?q=' . $this->buildQuery($query) . "&format=json");
+            
+            $result = $client->exec();
+            
             return $this->normalizer->normalize($result);
         } catch (\MediaProviderException $e) {
             throw $e->getMessage();
@@ -38,6 +35,11 @@ class FlickrProvider extends AbstractProvider
             $value = '"'.$value.'"';
         });
 
-        return ['where' => http_build_query($params, '', ' and ')];
+        return urlencode(urldecode(sprintf(
+            'select * from %s where %s and api_key="%s"',
+            'flickr.photos.search',
+            http_build_query($params, '', ' and '),
+            $this->client->getConfig('api_key')
+        )));
     }
 }

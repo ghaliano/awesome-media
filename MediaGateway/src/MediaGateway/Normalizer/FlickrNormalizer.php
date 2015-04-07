@@ -8,14 +8,14 @@ use MediaGateway\Query;
 
 class FlickrNormalizer implements MediaItemNormalizerInterface
 {  
-    public function normalize(array $result)
+    public function normalize($result)
     {
         $normalized = [];
-        foreach($result['query']['results']['photo'] as $item) {
+        foreach($result->query->results->photo as $item) {
             $flickr = new \MediaGateway\Model\Flickr();
             $flickr
-                ->setRemoteId($item['id'])
-                ->setTitle($item['title'])
+                ->setRemoteId($item->id)
+                ->setTitle($item->title)
             ;
             $normalized[] = $flickr;
         }

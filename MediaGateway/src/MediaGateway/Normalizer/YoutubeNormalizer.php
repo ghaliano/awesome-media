@@ -8,7 +8,7 @@ use MediaGateway\Query;
 
 class YoutubeNormalizer implements MediaItemNormalizerInterface
 {  
-    public function normalize(array $result)
+    public function normalize($result)
     { 
         $normalized = [];
         foreach($result as $item) {

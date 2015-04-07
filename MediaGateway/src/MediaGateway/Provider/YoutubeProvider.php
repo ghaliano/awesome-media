@@ -8,21 +8,14 @@ use MediaGateway\MediaProviderException;
 use MediaGateway\Provider\AbstractProvider;
 use MediaGateway\Normalizer\YoutubeNormalizer;
 use MediaGateway\Query;
+use MediaGateway\Client\MediaProviderClient;
 
 class YoutubeProvider extends AbstractProvider
 {
-    protected $youtube;
-
-    function __construct(\Google_Service_YouTube $youtube, MediaItemNormalizerInterface $normalizer=null)
-    {
-        $this->youtube = $youtube;
-        $this->normalizer = $normalizer?$normalizer:new YoutubeNormalizer();
-    }
-
     public function search(Query $query) 
     {
         try {
-            $searchResponse = $this->youtube->search->listSearch(
+            $searchResponse = $this->client->getClient()->search->listSearch(
                 'id,snippet', $this->buildQuery($query)
             );
 

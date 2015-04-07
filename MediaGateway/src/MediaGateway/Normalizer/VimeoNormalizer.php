@@ -8,7 +8,7 @@ use MediaGateway\Query;
 
 class VimeoNormalizer implements MediaItemNormalizerInterface
 {
-    public function normalize(array $result)
+    public function normalize($result)
     {
         $normalized = [];
         foreach($result['body']['data'] as $item) {

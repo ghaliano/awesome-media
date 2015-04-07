@@ -2,11 +2,11 @@
 
 namespace MediaGateway;
 
-interface MediaItemNormalizerInterface
+interface MediaProviderClientInterface
 {
     /**
      * @param Query $query
      * @return array
      */
-    public function normalize($result);
+    public function getClient();
 }

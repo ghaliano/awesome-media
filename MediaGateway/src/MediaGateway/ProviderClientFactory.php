@@ -1,7 +1,6 @@
 <?php
 
 namespace MediaGateway;
-use MediaGateway\Client\FlickrClient;
 
 class ProviderClientFactory
 {
@@ -9,9 +8,7 @@ class ProviderClientFactory
     {
         switch ($providerName) {
             case 'youtube':                
-                $client = new \Google_Client();
-                $client->setDeveloperKey($config['developer_key']);
-                $client = new \Google_Service_YouTube($client);
+                $client = new MediaGateway\Client\FlickrClient();
             break;
 
             case 'vimeo':

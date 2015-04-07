@@ -16,7 +16,8 @@
         "google/apiclient": "~1.1",
         "dailymotion/sdk": "~1.6",
         "vimeo/vimeo-api": "~1.1",
-        "ise/php-soundcloud": "3.*"
+        "ise/php-soundcloud": "3.*",
+        "php-curl-class/php-curl-class": "dev-master"
     },
     "autoload": {
         "psr-4": {

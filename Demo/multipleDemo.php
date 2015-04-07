@@ -9,16 +9,15 @@ use MediaGateway\Provider\VimeoProvider;
 use MediaGateway\Provider\DailymotionProvider;
 use MediaGateway\Provider\SoundcloudProvider;
 use MediaGateway\Provider\FlickrProvider;
-use Flickering\Flickering;
 
 $providerChain = new ProviderChain();
 
 $providerChain->addProviders([
-    new YoutubeProvider(ProviderClientFactory::create('youtube', $youtubeConfig)),
-    new VimeoProvider(ProviderClientFactory::create('vimeo', $vimeoConfig)),
-    new DailymotionProvider(ProviderClientFactory::create('dailymotion', $dailymotionConfig)),
-    new SoundcloudProvider(ProviderClientFactory::create('soundcloud', $soundcloudConfig)),
-    new FlickrProvider(ProviderClientFactory::create('flickr', $flickerConfig))
+    new YoutubeProvider(new MediaGateway\Client\YoutubeClient($youtubeConfig)),
+    new VimeoProvider(new MediaGateway\Client\VimeoClient($vimeoConfig)),
+    new DailymotionProvider(new MediaGateway\Client\DailymotionClient($dailymotionConfig)),
+    new SoundcloudProvider(new MediaGateway\Client\SoundcloudClient($soundcloudConfig)),
+    new FlickrProvider(new MediaGateway\Client\FlickrClient($flickerConfig))
 ]);
 
 $query = new \MediaGateway\Query();

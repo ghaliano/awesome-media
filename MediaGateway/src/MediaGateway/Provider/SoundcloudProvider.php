@@ -5,21 +5,14 @@ namespace MediaGateway\Provider;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\Normalizer\SoundcloudNormalizer;
 use MediaGateway\Query;
+use MediaGateway\Client\MediaProviderClient;
 
 class SoundcloudProvider extends AbstractProvider
-{    
-    private $soundcloud;
-
-    function __construct($soundcloud, MediaItemNormalizerInterface $normalizer=null)
-    {
-        $this->soundcloud = $soundcloud;
-        $this->normalizer = $normalizer?$normalizer:new SoundcloudNormalizer();
-    }
-
+{
     public function search(Query $query)
     {
         try {
-            $result = json_decode($this->soundcloud->get('tracks', $this->buildQuery($query)), true);
+            $result = json_decode($this->client->getClient()->get('tracks', $this->buildQuery($query)), true);
         } catch (Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
             throw $e->getMessage();
         }

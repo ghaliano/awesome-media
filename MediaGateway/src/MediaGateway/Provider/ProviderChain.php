@@ -28,7 +28,7 @@ class ProviderChain implements MediaProviderInterface
      */
     public function addProvider(MediaProviderInterface $provider)
     {
-        $this->providers[$this->guessName($provider)] = $provider;
+        $this->providers[$provider->guessName()] = $provider;
 
         return $this;
     }
@@ -67,10 +67,5 @@ class ProviderChain implements MediaProviderInterface
     public function with($providerName)
     {
         return $this->providers[$providerName];
-    }
-
-    protected function guessName($object)
-    {
-        return end(explode('\\', get_class($object)));
     }
 }

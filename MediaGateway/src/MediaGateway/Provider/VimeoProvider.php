@@ -5,21 +5,13 @@ namespace MediaGateway\Provider;
 use MediaGateway\MediaProviderInterface;
 use MediaGateway\Normalizer\VimeoNormalizer;
 use MediaGateway\Query;
+use MediaGateway\Client\MediaProviderClient;
 
 class VimeoProvider extends AbstractProvider
-{    
-    private $vimeo;
-    private $normalizer;
-
-    function __construct(\Vimeo\Vimeo $vimeo, MediaItemNormalizerInterface $normalizer=null)
-    {
-        $this->vimeo = $vimeo;
-        $this->normalizer = $normalizer?$normalizer:new VimeoNormalizer();
-    }
-
+{
     public function search(Query $query)
     {
-        $result = $this->vimeo->request('/videos', $this->buildQuery($query), 'GET');
+        $result = $this->client->getClient()->request('/videos', $this->buildQuery($query), 'GET');
 
         if (!isset($result['body']['data'])) {
             return []; // consider exception?
