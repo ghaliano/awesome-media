@@ -15,7 +15,7 @@ class ProviderChain implements MediaProviderInterface
     /**
      * @param MediaProviderInterface[] $providers
      */
-    function __construct(array $providers = [])
+    public function __construct(array $providers = [])
     {
         foreach ($providers as $provider) {
             $this->addProvider($provider);
@@ -23,7 +23,7 @@ class ProviderChain implements MediaProviderInterface
     }
 
     /**
-     * @param MediaProviderInterface $provider
+     * @param  MediaProviderInterface $provider
      * @return $this
      */
     public function addProvider(MediaProviderInterface $provider)
@@ -34,7 +34,7 @@ class ProviderChain implements MediaProviderInterface
     }
 
     /**
-     * @param MediaProviderInterface $provider
+     * @param  MediaProviderInterface $provider
      * @return $this
      */
     public function addProviders($providers)
@@ -61,7 +61,7 @@ class ProviderChain implements MediaProviderInterface
     }
 
     /**
-     * @param string $providerName
+     * @param  string $providerName
      * @return \MediaProviderInterface
      */
     public function with($providerName)

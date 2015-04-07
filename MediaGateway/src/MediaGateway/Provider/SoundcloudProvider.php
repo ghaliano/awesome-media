@@ -2,10 +2,7 @@
 
 namespace MediaGateway\Provider;
 
-use MediaGateway\MediaProviderInterface;
-use MediaGateway\Normalizer\SoundcloudNormalizer;
 use MediaGateway\Query;
-use MediaGateway\Client\MediaProviderClient;
 
 class SoundcloudProvider extends AbstractProvider
 {
@@ -20,8 +17,10 @@ class SoundcloudProvider extends AbstractProvider
         return $this->normalizer->normalize($result);
     }
 
-    /** because each provider has specific filter implementation and specific key */
-    protected function buildQuery(Query $query) 
+    /**
+ * because each provider has specific filter implementation and specific key 
+*/
+    protected function buildQuery(Query $query)
     {
         return ['q' => $query->getTerm()]+$query->getExtra()+['limit' => $query->getLimit()];
     }

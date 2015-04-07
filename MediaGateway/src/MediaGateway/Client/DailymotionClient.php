@@ -1,8 +1,6 @@
 <?php
 namespace MediaGateway\Client;
 
-use MediaGateway\Client\MediaProviderClient;
-
 class DailymotionClient extends MediaProviderClient
 {
     public function __construct($config)
@@ -10,8 +8,8 @@ class DailymotionClient extends MediaProviderClient
         $this->config = $config;
         $this->client = new \Dailymotion();
         $this->client->setGrantType(
-            \Dailymotion::GRANT_TYPE_CLIENT_CREDENTIALS, 
-            $config['api_key'], 
+            \Dailymotion::GRANT_TYPE_CLIENT_CREDENTIALS,
+            $config['api_key'],
             $config['secret_key']
         );
     }

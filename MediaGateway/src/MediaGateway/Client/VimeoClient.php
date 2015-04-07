@@ -1,8 +1,6 @@
 <?php
 namespace MediaGateway\Client;
 
-use MediaGateway\Client\MediaProviderClient;
-
 class VimeoClient extends MediaProviderClient
 {
     public function __construct($config)

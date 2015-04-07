@@ -5,7 +5,7 @@ namespace MediaGateway;
 interface MediaProviderClientInterface
 {
     /**
-     * @param Query $query
+     * @param  Query $query
      * @return array
      */
     public function getClient();

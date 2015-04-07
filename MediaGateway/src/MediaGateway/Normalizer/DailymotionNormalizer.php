@@ -3,21 +3,18 @@
 namespace MediaGateway\Normalizer;
 
 use MediaGateway\MediaItemNormalizerInterface;
-use MediaGateway\MediaProviderInterface;
-use MediaGateway\Query;
 
 class DailymotionNormalizer implements MediaItemNormalizerInterface
 {
     public function normalize($result)
-    { 
+    {
         $normalized = [];
-        foreach($result['list'] as $item) {
+        foreach ($result['list'] as $item) {
             $dailymotion = new \MediaGateway\Model\Dailymotion();
             $dailymotion
                 ->setRemoteId($item['id'])
                 ->setTitle($item['title'])
-                ->setDescription($item['description'])
-            ;
+                ->setDescription($item['description']);
             $normalized[] = $dailymotion;
         }
 

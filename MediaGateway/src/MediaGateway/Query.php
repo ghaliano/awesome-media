@@ -10,7 +10,7 @@ class Query
     private $extra = [];
 
     /**
-     * @param int $limit
+     * @param  int $limit
      * @return $this
      */
     public function setLimit($limit)
@@ -29,7 +29,7 @@ class Query
     }
 
     /**
-     * @param int $offset
+     * @param  int $offset
      * @return $this
      */
     public function setOffset($offset)
@@ -48,7 +48,7 @@ class Query
     }
 
     /**
-     * @param mixed $term
+     * @param  mixed $term
      * @return $this
      */
     public function setTerm($term)
@@ -67,7 +67,7 @@ class Query
     }
 
     /**
-     * @param array $extra
+     * @param  array $extra
      * @return $this
      */
     public function setExtra(array $extra)

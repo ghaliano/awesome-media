@@ -15,72 +15,72 @@ abstract class MediaProvider
 
     protected $publishedAt;
 
-    public function getRemoteId() 
+    public function getRemoteId()
     {
         return $this->remoteId;
     }
 
-    public function setRemoteId($remoteId) 
+    public function setRemoteId($remoteId)
     {
         $this->remoteId = $remoteId;
 
         return $this;
     }
 
-    public function getTitle() 
+    public function getTitle()
     {
         return $this->title;
     }
 
-    public function setTitle($title) 
+    public function setTitle($title)
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getType() 
+    public function getType()
     {
         return $this->type;
     }
 
-    public function setType($type) 
+    public function setType($type)
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getProviderName() 
+    public function getProviderName()
     {
         return $this->providerName;
     }
 
-    public function setProviderName($providerName) 
+    public function setProviderName($providerName)
     {
         $this->providerName = $providerName;
 
         return $this;
     }
 
-    public function getDescription() 
+    public function getDescription()
     {
         return $this->description;
     }
 
-    public function setDescription($description) 
+    public function setDescription($description)
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getPublishedAt() 
+    public function getPublishedAt()
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt($publishedAt) 
+    public function setPublishedAt($publishedAt)
     {
         $this->publishedAt = $publishedAt;
 

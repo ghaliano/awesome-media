@@ -2,17 +2,12 @@
 
 namespace MediaGateway\Provider;
 
-use MediaGateway\MediaProviderInterface;
-use MediaGateway\MediaRendrerInterface;
 use MediaGateway\MediaProviderException;
-use MediaGateway\Provider\AbstractProvider;
-use MediaGateway\Normalizer\YoutubeNormalizer;
 use MediaGateway\Query;
-use MediaGateway\Client\MediaProviderClient;
 
 class YoutubeProvider extends AbstractProvider
 {
-    public function search(Query $query) 
+    public function search(Query $query)
     {
         try {
             $searchResponse = $this->client->getClient()->search->listSearch(
@@ -20,15 +15,14 @@ class YoutubeProvider extends AbstractProvider
             );
 
             foreach ($searchResponse['items'] as $searchResult) {
-              switch ($searchResult['id']['kind']) {
+                switch ($searchResult['id']['kind']) {
                 case 'youtube#video':
-                  $result[] = $searchResult['modelData'];
-                  break;
-              }
+                    $result[] = $searchResult['modelData'];
+                    break;
+                }
             }
 
             return $this->normalizer->normalize($result);
-
         } catch (\Google_ServiceException $e) {
             throw new MediaProviderException($e->getMessage());
         } catch (\Google_Exception $e) {
@@ -38,8 +32,10 @@ class YoutubeProvider extends AbstractProvider
         }
     }
 
-    /** because each provider has specific filter implementation and specific key */
-    protected function buildQuery($query) 
+    /**
+ * because each provider has specific filter implementation and specific key 
+*/
+    protected function buildQuery($query)
     {
         return ['q' => $query->getTerm()]+$query->getExtra()+['maxResults' => $query->getLimit()];
     }

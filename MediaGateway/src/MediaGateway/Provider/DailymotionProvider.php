@@ -1,40 +1,30 @@
 <?php
 namespace MediaGateway\Provider;
 
-use MediaGateway\MediaProviderInterface;
 use MediaGateway\MediaProviderException;
-use MediaGateway\Normalizer\DailymotionNormalizer;
 use MediaGateway\Query;
-use MediaGateway\Client\MediaProviderClient;
 
 class DailymotionProvider extends AbstractProvider
 {
     public function search(Query $query)
     {
-        try
-        {
+        try {
             $result = $this->client->getClient()->get(
                 '/videos?'.$this->buildQuery($query),
                 array('fields' => array('id', 'title', 'description'))
             );
 
             return $this->normalizer->normalize($result);
-        }
-        catch (\DailymotionAuthRequiredException $e)
-        {
+        } catch (\DailymotionAuthRequiredException $e) {
             throw new MediaProviderException($e->getMessage());
-        }
-        catch (\DailymotionAuthRefusedException $e)
-        {
+        } catch (\DailymotionAuthRefusedException $e) {
             throw new MediaProviderException($e->getMessage());
-        }
-        catch (\DailymotionApiException $e)
-        {
+        } catch (\DailymotionApiException $e) {
             throw new MediaProviderException($e->getMessage());
         }
     }
 
-    protected function buildQuery($query) 
+    protected function buildQuery($query)
     {
         return http_build_query(['search' => $query->getTerm()]+$query->getExtra()+['limit' => $query->getLimit()]);
     }

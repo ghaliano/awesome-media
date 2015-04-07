@@ -3,21 +3,18 @@
 namespace MediaGateway\Normalizer;
 
 use MediaGateway\MediaItemNormalizerInterface;
-use MediaGateway\MediaProviderInterface;
-use MediaGateway\Query;
 
 class VimeoNormalizer implements MediaItemNormalizerInterface
 {
     public function normalize($result)
     {
         $normalized = [];
-        foreach($result['body']['data'] as $item) {
+        foreach ($result['body']['data'] as $item) {
             $vimeo = new \MediaGateway\Model\Vimeo();
             $vimeo
                 ->setRemoteId(str_replace('/videos/', '', $item['uri']))
                 ->setTitle($item['name'])
-                ->setDescription($item['description'])
-            ;
+                ->setDescription($item['description']);
             $normalized[] = $vimeo;
         }
 

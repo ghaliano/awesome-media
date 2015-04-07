@@ -7,12 +7,12 @@ class Youtube extends MediaProvider
     protected $providerName = 'youtube';
     protected $thumbnails = [];
 
-    public function getThumbnails() 
+    public function getThumbnails()
     {
         return $this->thumbnails;
     }
 
-    public function setThumbnails($thumbnails) 
+    public function setThumbnails($thumbnails)
     {
         $this->thumbnails = $thumbnails;
 

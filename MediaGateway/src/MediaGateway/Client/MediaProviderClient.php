@@ -20,7 +20,7 @@ class MediaProviderClient
 
     public function getConfig($index = null)
     {
-        return ($index && isset($this->config[$index]))?$this->config[$index]:$this->config;
+        return ($index && isset($this->config[$index])) ? $this->config[$index] : $this->config;
     }
 
     public function setConfig($config)

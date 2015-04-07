@@ -5,7 +5,7 @@ namespace MediaGateway;
 interface MediaItemNormalizerInterface
 {
     /**
-     * @param Query $query
+     * @param  Query $query
      * @return array
      */
     public function normalize($result);
