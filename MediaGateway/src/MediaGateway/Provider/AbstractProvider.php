@@ -31,7 +31,7 @@ abstract class AbstractProvider implements MediaProviderInterface
 
     public function guessName()
     {
-        $class = explode('\\', self::class);
+        $class = explode('\\', get_class($this));
 
         return str_replace('Provider', '', end($class));
     }
