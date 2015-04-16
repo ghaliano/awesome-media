@@ -55,24 +55,29 @@ $youtubeProvider->search($query);
 ##Multiple provider
 The component use a Chain class to manipulate mutiple providers like one
 ```
+<?php
 $loader = require '../vendor/autoload.php';
+require 'config_dev.php';
 use MediaGateway\Provider\ProviderChain;
 use MediaGateway\ProviderClientFactory;
 use MediaGateway\Provider\YoutubeProvider;
 use MediaGateway\Provider\VimeoProvider;
-
-$youtubeProvider = new YoutubeProvider(ProviderClientFactory::create('youtube', $youtubeConfig));
-$vimeoProvider = new VimeoProvider(ProviderClientFactory::create('vimeo', $vimeoConfig));
-
-//providerChain init and doing search
+use MediaGateway\Provider\DailymotionProvider;
+use MediaGateway\Provider\SoundcloudProvider;
+use MediaGateway\Provider\FlickrProvider;
 $providerChain = new ProviderChain();
-$providerChain
-    ->addProvider($youtubeProvider)
-    ->addProvider($vimeoProvider)
-;
+$providerChain->addProviders([
+    new YoutubeProvider(new MediaGateway\Client\YoutubeClient($youtubeConfig)),
+    new VimeoProvider(new MediaGateway\Client\VimeoClient($vimeoConfig)),
+    new DailymotionProvider(new MediaGateway\Client\DailymotionClient($dailymotionConfig)),
+    new SoundcloudProvider(new MediaGateway\Client\SoundcloudClient($soundcloudConfig)),
+    new FlickrProvider(new MediaGateway\Client\FlickrClient($flickerConfig))
+]);
 $query = new \MediaGateway\Query();
 $query->setTerm('kittens')->setLimit(10);
-$providerChain->search($query);
+$result = $providerChain->search($query);
+print '<pre>';
+print_r($result);
 ```
 # Demo
 https://github.com/ghaliano/awesome-media/blob/master/Demo/demo.php
