@@ -66,6 +66,7 @@ use MediaGateway\Provider\DailymotionProvider;
 use MediaGateway\Provider\SoundcloudProvider;
 use MediaGateway\Provider\FlickrProvider;
 $providerChain = new ProviderChain();
+
 $providerChain->addProviders([
     new YoutubeProvider(new MediaGateway\Client\YoutubeClient($youtubeConfig)),
     new VimeoProvider(new MediaGateway\Client\VimeoClient($vimeoConfig)),
@@ -73,6 +74,7 @@ $providerChain->addProviders([
     new SoundcloudProvider(new MediaGateway\Client\SoundcloudClient($soundcloudConfig)),
     new FlickrProvider(new MediaGateway\Client\FlickrClient($flickerConfig))
 ]);
+
 $query = new \MediaGateway\Query();
 $query->setTerm('kittens')->setLimit(10);
 $result = $providerChain->search($query);
