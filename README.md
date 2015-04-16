@@ -42,15 +42,20 @@ $soundcloudConfig = [
 ```
 ##Single provider
 ```
+<?php
 $loader = require '../vendor/autoload.php';
+require 'config_dev.php';
+use MediaGateway\ProviderClientFactory;
 use MediaGateway\Provider\YoutubeProvider;
 $youtubeProvider = new YoutubeProvider(
     ProviderClientFactory::create('youtube', $youtubeConfig)
 );
-
 $query = new \MediaGateway\Query();
 $query->setTerm('kittens')->setLimit(10);
-$youtubeProvider->search($query);
+ 
+$result = $youtubeProvider->search($query);
+print '<pre>';
+print_r($result);
 ```
 ##Multiple provider
 The component use a Chain class to manipulate mutiple providers like one
